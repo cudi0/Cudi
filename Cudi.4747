@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>مشاركة الموقع</title>
+</head>
+<body>
+  <h1>اضغط للحصول على موقعك وإرساله</h1>
+  <a href="#" id="getLocation">📍 إرسال موقعي إليك</a>
+
+  <script>
+    document.getElementById('getLocation').addEventListener('click', function(event) {
+      event.preventDefault();
+
+      if (!navigator.geolocation) {
+        alert('المتصفح لا يدعم خاصية الموقع الجغرافي.');
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(function(position) {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+
+        // عدّل هذا الرابط إلى رابط استقبال الموقع عندك على السيرفر
+        const endpoint = 'https://your-server.com/receive-location';
+
+        // إرسال البيانات كـ GET
+        const url = `${endpoint}?lat=${lat}&lng=${lng}`;
+
+        // إعادة التوجيه للطلب، أو استخدم fetch لإرسال بدون ترك الصفحة
+        window.location.href = url;
+
+        // بدلاً من إعادة التوجيه، يمكنك استخدام fetch:
+        // fetch(url)
+        //   .then(() => alert('تم الإرسال'))
+        //   .catch(err => alert('فشل الإرسال: ' + err));
+      }, function(error) {
+        alert('فشل جلب الموقع: ' + error.message);
+      });
+    });
+  </script>
+</body>
+</html>
